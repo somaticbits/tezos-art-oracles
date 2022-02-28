@@ -19,5 +19,3 @@ let main (entrypoint, storage: action * storage) : return =
     match entrypoint with
     | GetPrice _u -> get (_u, storage)
     | Update _v   -> update (_v, storage) 
-
-
