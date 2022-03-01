@@ -1,21 +1,32 @@
-type storage = nat
+type sensor_data = { name: string; data: int }
+type sensor_ledger = (nat, sensor_data) big_map
+type storage = { sensor_ledger : sensor_ledger;
+                 admin : address }
 
 type return = operation list * storage
 
-type update = 
-| Store of nat
+type entrypoint =
+| GetPrice of storage contract
+| Update of sensor_data
 
-type action =
-| GetPrice of nat contract
-| Update of nat
+let update (v, s: sensor_data * storage) : return =
+    if Tezos.source <> s.admin
+    then (failwith "NOT_ALLOWED" : return)
+    else
+        let new_storage = { s with sensor_ledger = Big_map.add 0n {name = v.name; data = v.data} s.sensor_ledger } in
+    (([] : operation list), new_storage)
 
-let update (value, _storage: nat * storage) : return =
-    (([] : operation list), value)
+let get (u, s: storage contract * storage) : return =
+    ([Tezos.transaction s 0tez u], s)
 
-let get (u, storage: nat contract * storage) : return =
-    ([Tezos.transaction storage 0tez u], storage)
+let updateAdmin (a, s: address * storage) : return =
+    if Tezos.source <> s.admin
+    then (failwith "NOT_ADMIN" : return)
+    else
+        let new_storage = { s with admin = a } in
+    (([] : operation list), new_storage)
 
-let main (entrypoint, storage: action * storage) : return =
-    match entrypoint with
-    | GetPrice _u -> get (_u, storage)
-    | Update _v -> update (_v, storage) 
+let main (p, s: entrypoint * storage) : return =
+    match p with
+    | GetPrice u -> get (u, s)
+    | Update v -> update (v, s) 
