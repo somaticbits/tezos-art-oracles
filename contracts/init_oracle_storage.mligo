@@ -1,0 +1,1 @@
+({sensor_ledger=(Big_map.literal[0n,{name="init";data=0}]);admin=("tz1TNN2j6Ykco2QjWbt29ydPyFASny1kAaQM":address)}:storage)
