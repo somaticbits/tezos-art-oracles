@@ -18,4 +18,4 @@ let get (u, storage: nat contract * storage) : return =
 let main (entrypoint, storage: action * storage) : return =
     match entrypoint with
     | GetPrice _u -> get (_u, storage)
-    | Update _v   -> update (_v, storage) 
+    | Update _v -> update (_v, storage) 
