@@ -1,6 +1,6 @@
 #include "oracle.mligo"
 
-let _test () =
+let test =
     let initial_storage = 0n in
     let taddr, _, _ = Test.originate main initial_storage 0tez in
     let contract = Test.to_contract(taddr) in
