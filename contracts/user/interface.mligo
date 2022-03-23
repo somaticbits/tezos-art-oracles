@@ -1,13 +1,7 @@
-type view_param =
+type get_param =
 {
     sensor_id : nat;
     data_id   : nat;
-}
-
-type get_param =
-{
-    parameter : view_param;
-    addr      : address;
 }
 
 // parameter type
