@@ -1,0 +1,1 @@
+{oracle_address=("KT19LTymLazExGED7yLd6yPCnohukfGSbuAh":address);data=Some(0n);admin=("tz1TNN2j6Ykco2QjWbt29ydPyFASny1kAaQM":address)}
