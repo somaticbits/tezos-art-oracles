@@ -1,1 +1,0 @@
-{oracleAddress=("KT19LTymLazExGED7yLd6yPCnohukfGSbuAh":address);price=0n;admin=("tz1TNN2j6Ykco2QjWbt29ydPyFASny1kAaQM")}
