@@ -1,4 +1,4 @@
-let add_data (p, s: add_data_param * storage) : storage =
+let add_data (p, s: add_param * storage) : storage =
     let { sensor_id = sensor_id; data = data } = p in
     if Tezos.source <> s.admin
     then (failwith "NOT_ALLOWED" : storage)
@@ -13,8 +13,8 @@ let add_data (p, s: add_data_param * storage) : storage =
                 sensor_ledger = new_data;
                 next_data_id  = increment_data_id }
 
-let add_sensor (p, s: add_sensor_param * storage) : storage =
-    let { sensor_id = sensor_id } = p in
+let add_sensor (p, s: sensor_id * storage) : storage =
+    let sensor_id = p in
     if Tezos.source <> s.admin
     then (failwith "NOT_ALLOWED" : storage)
     else
@@ -24,16 +24,20 @@ let add_sensor (p, s: add_sensor_param * storage) : storage =
             let new_sensor = Map.add sensor_id 0n s.next_data_id in
             { s with next_data_id = new_sensor }
 
+// let remove_sensor (p, s: sensor_id * storage) : storage =
+
+
+
 let update_admin (p, s: address * storage) : storage =
     if Tezos.source <> s.admin
-    then (failwith "NOT_ADMIN" : storage)
+    then (failwith "NOT_ALLOWED" : storage)
     else
         { s with admin = p }
 
 let withdraw (p, s: withdraw_param * storage) : return =
     let { tez_amt = tez_amt } = p in
     if Tezos.source <> s.admin
-    then (failwith "NOT_ADMIN" : return)
+    then (failwith "NOT_ALLOWED" : return)
     else
         if Tezos.balance < tez_amt
         then (failwith "NOT_ENOUGH_BALANCE" : return)

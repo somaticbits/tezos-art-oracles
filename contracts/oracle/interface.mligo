@@ -1,12 +1,7 @@
-type add_data_param = 
+type add_param = 
 {
    sensor_id : nat;
    data      : nat; 
-}
-
-type add_sensor_param =
-{
-    sensor_id : nat;
 }
 
 type get_param =
@@ -20,16 +15,17 @@ type withdraw_param =
     tez_amt : tez;
 }
 
+type sensor_id = nat
+type data_id   = nat
+
 // parameter type
 type parameter =
-    | Add_data of add_data_param
-    | Add_sensor of add_sensor_param
+    | Add_data of add_param
+    | Add_sensor of sensor_id
     | Update_admin of address
     | Withdraw of withdraw_param
 
 // storage type
-type sensor_id     = nat
-type data_id       = nat
 type sensor_ledger = ((sensor_id * data_id), nat) big_map
 
 type storage = 
