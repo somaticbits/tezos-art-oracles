@@ -33,7 +33,7 @@ type sensor_ledger = (sensor_key, nat) map
 type storage = 
 { 
     sensor_ledger : sensor_ledger;
-    next_data_id  : (sensor_id, data_id) map;
+    n_data_ids    : (sensor_id, data_id) map;
     admin         : address 
 }
 
