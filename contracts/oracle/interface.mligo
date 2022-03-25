@@ -17,21 +17,23 @@ type withdraw_param =
 
 type sensor_id = nat
 type data_id   = nat
+type sensor_key = (sensor_id * data_id)
 
 // parameter type
 type parameter =
     | Add_data of add_param
     | Add_sensor of sensor_id
+    | Remove_sensor of sensor_id
     | Update_admin of address
     | Withdraw of withdraw_param
 
 // storage type
-type sensor_ledger = ((sensor_id * data_id), nat) big_map
+type sensor_ledger = (sensor_key, nat) map
 
 type storage = 
 { 
     sensor_ledger : sensor_ledger;
-    next_data_id  : (sensor_id, nat) map;
+    next_data_id  : (sensor_id, data_id) map;
     admin         : address 
 }
 
