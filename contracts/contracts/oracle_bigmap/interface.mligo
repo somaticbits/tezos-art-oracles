@@ -8,12 +8,6 @@ type add_param =
    data      : nat; 
 }
 
-type remove_param =
-{
-	sensor_key 		: sensor_key;
-	last_sensor_key : sensor_key;
-}
-
 type get_param =
 {
     sensor_id : sensor_id;
@@ -29,7 +23,7 @@ type withdraw_param =
 type parameter =
     | Add_data of add_param
     | Add_sensor of sensor_id
-	| Remove_sensor of remove_param 
+	| Remove_sensor of sensor_id
     | Update_admin of address
     | Withdraw of withdraw_param
 

@@ -49,8 +49,13 @@ let add_sensor (p, s: sensor_id * storage) : storage =
             let new_sensor = Map.add sensor_id 0n s.n_data_ids in
             { s with n_data_ids = new_sensor }
 
-let remove_sensor (p, s: remove_param * storage) : storage =
-	let { sensor_key = sensor_key; last_sensor_key = last_sensor_key } = p in
+(**
+Remove sensor by removing the incremental data_id in the
+sensor_key recursively from 0n to len(data_ids) and creating
+a new map out of that
+*)
+let remove_sensor (p, s: sensor_id * storage) : storage =
+	let sensor_id = p in
 	if Tezos.source <> s.admin
 	then (failwith op_not_admin : storage)
 	else
@@ -61,8 +66,15 @@ let remove_sensor (p, s: remove_param * storage) : storage =
 			let new_sensor_ledger = Big_map.update sensor_key (None: nat option) sensor_ledger in
 			let new_sensor_key = (sensor_key.0, sensor_key.1 + 1n) in
 			remove_values (new_sensor_key, last_sensor_key, new_sensor_ledger) in
-		let new_sensor_ledger = remove_values (sensor_key, last_sensor_key, s.sensor_ledger) in
-		{ s with sensor_ledger = new_sensor_ledger }
+		let get_n_data_ids : nat = 
+            match Map.find_opt sensor_id s.n_data_ids with
+            | None -> (failwith sensor_not_found : nat)
+            | Some id -> id in 
+        let new_map = remove_values ((sensor_id, 0n), (sensor_id, get_n_data_ids), s.sensor_ledger) in
+		let remove_data_id = Map.remove sensor_id s.n_data_ids in
+		{ s with 
+				sensor_ledger = new_map;
+				n_data_ids 	  = remove_data_id }
 
 let update_admin (p, s: address * storage) : storage =
 	let new_admin = p in
