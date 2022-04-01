@@ -199,5 +199,6 @@ let test =
 			end
 	in	
 	let storage : storage = Test.get_storage taddr in
-	let () = assert (user = storage.admin) in
+	let () = assert (user = storage.admin) n
+
 	()
