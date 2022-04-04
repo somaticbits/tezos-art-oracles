@@ -35,8 +35,8 @@ let add_data (p, s: add_param * storage) : storage =
     let new_data = Map.add (sensor_id, get_n_data_ids) data s.sensor_ledger in
     let increment_data_id = Map.update sensor_id (Some (get_n_data_ids + 1n)) s.n_data_ids in
     { s with 
-    	sensor_ledger = new_data;
-    	n_data_ids    = increment_data_id }
+    		sensor_ledger = new_data;
+    		n_data_ids    = increment_data_id }
 
 (**
 Check first if sensor already exists,

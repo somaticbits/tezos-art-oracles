@@ -9,6 +9,18 @@ let main (action, storage: parameter * storage) : return =
     | Update_admin p 	-> ([] : operation list), update_admin (p, storage)
     | Withdraw p 		-> withdraw (p, storage)
 
+let test_entrypoint (type a) (p, c: a * a contract) : bool =
+	let () = match Test.transfer_to_contract a a contract  0tez with
+		| Success nat -> true
+		| Fail err ->
+			begin
+				match err with
+				| Rejected rej -> let () = Test.log ("rejected", rej) in false
+				| Other -> let () = Test.log "other" in false
+			end
+		in
+	()
+
 let test =
 	let admin = Test.nth_bootstrap_account 0 in
 	let user = Test.nth_bootstrap_account 1 in
@@ -32,15 +44,8 @@ let test =
 	let add_param : add_param = { sensor_id = 0n; data = 123n } in
 	let to_add : add_param contract = Test.to_entrypoint "add_data"	taddr in
 	let () = Test.log("Expected to fail:") in
-	let _ = match Test.transfer_to_contract to_add add_param 0tez with
-		| Success nat -> true
-		| Fail err ->
-			begin
-				match err with
-				| Rejected rej -> let () = Test.log ("rejected", rej) in false
-				| Other -> let () = Test.log "other" in false
-			end
-	in
+	let () = test_entrypoint add_param add_param to add in
+	let () = Test.log("Change source to admin.") in
 	let () = Test.set_source admin in
 	let add_param : add_param = { sensor_id = 1n; data = 123n } in
 	let to_add : add_param contract = Test.to_entrypoint "add_data"	taddr in
@@ -54,7 +59,6 @@ let test =
 				| Other -> let () = Test.log "other" in false
 			end
 	in
-	let () = Test.log("Change source to admin.") in
 	let add_param : add_param = { sensor_id = 0n; data = 123n } in
 	let to_add : add_param contract = Test.to_entrypoint "add_data"	taddr in
 	let _ = match Test.transfer_to_contract to_add add_param 0tez with
@@ -114,7 +118,7 @@ let test =
 	let storage : storage = Test.get_storage taddr in
 	let () = assert (Map.mem 1n storage.n_data_ids) in
 
-	// ADD_DATA entrypoint and REMOVE_SENSOR entrypoint
+	// ADD_DATA and REMOVE_SENSOR entrypoint
 	let () = Test.log("---------- Testing remove_sensor entrypoint ----------") in
 	let () = Test.log("Change source to user.") in
 	let () = Test.set_source user in
