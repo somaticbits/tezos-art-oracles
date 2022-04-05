@@ -1,5 +1,5 @@
-#include "./interface.mligo"
-#include "./oracle.mligo"
+#include "./partials/interface.mligo"
+#include "./partials/oracle.mligo"
 
 let main (action, storage: parameter * storage) : return =
     match action with

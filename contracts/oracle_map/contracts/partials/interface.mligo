@@ -19,7 +19,7 @@ type sensor_id 	= nat
 type data_id   	= nat
 type sensor_key = (sensor_id * data_id)
 
-// parameter type
+(** parameter type *)
 type parameter =
     | Add_data of add_param
     | Add_sensor of sensor_id
@@ -27,7 +27,7 @@ type parameter =
     | Update_admin of address
     | Withdraw of withdraw_param
 
-// storage type
+(** storage type *)
 type sensor_ledger = (sensor_key, nat) map
 
 type storage = 
