@@ -16,7 +16,7 @@ let test =
 
 	let initial_storage =
 	{
-		sensor_ledger = (Map.literal[(0n,0n),0n]); 
+		sensor_ledger = (Big_map.literal[(0n,0n),0n]); 
 		n_data_ids 	  =	(Map.literal[(0n,0n)]);
 		admin 		  = admin;
 	} in

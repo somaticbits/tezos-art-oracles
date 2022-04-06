@@ -16,8 +16,7 @@ let test =
 
 	let initial_storage =
 	{
-		sensor_ledger = (Map.literal[(0n,0n),0n]); 
-		n_data_ids 	  =	(Map.literal[(0n,0n)]);
+		sensor_ledger = (Big_map.literal[(0n,0n)]); 
 		admin 		  = admin;
 	} in
 	let (taddr, _, _) = Test.originate main initial_storage 1tez in
@@ -77,7 +76,7 @@ let test =
 			end
 	in
 	let storage : storage = Test.get_storage taddr in
-	let data : nat = get_data ({ sensor_id = 0n; data_id = 0n }, storage) in
+	let data : nat = get_data ({ sensor_id = 0n }, storage) in
 	let () = assert (data = 123n) in
 
 	(** ADD_SENSOR entrypoint *)
@@ -132,7 +131,7 @@ let test =
 			end
 	in
 	let storage : storage = Test.get_storage taddr in
-	let () = assert (Map.mem 1n storage.n_data_ids) in
+	let () = assert (Map.mem 1n storage.sensor_ledger) in
 
 	(** ADD_DATA and REMOVE_SENSOR entrypoint *)
 	let () = Test.log("---------- Testing remove_sensor entrypoint ----------") in
@@ -197,8 +196,7 @@ let test =
 			end
 	in
 	let storage : storage = Test.get_storage taddr in
-	let () = assert (not (Map.mem (1n,0n) storage.sensor_ledger)) in
-	let () = assert (not (Map.mem 1n storage.n_data_ids)) in
+	let () = assert (not (Map.mem 1n storage.sensor_ledger)) in
 	
 	(** UPDATE_ADMIN entrypoint *)
 	let () = Test.log("---------- Test update_admin entrypoint ----------") in

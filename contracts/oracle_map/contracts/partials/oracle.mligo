@@ -15,11 +15,18 @@ let not_enough_balance = "NOT_ENOUGH_BALANCE"
 (** Operation failed because provided account is not a contract *)
 let not_contract = "NOT_CONTRACT"
 
+(** Operation failed because transaction included tez *)
+let not_zero_tez = "NOT_ZERO_TEZ"
+
 let fail_if_not_admin (s: storage) : unit =
 	if Tezos.source <> s.admin
     then (failwith op_not_admin : unit)
     else unit
-    
+
+let fail_if_any_tez_amt (s: storage) : unit =
+	if Tezos.amount > 0tz
+	then (failwith not_zero_tez : unit)
+	else unit
 
 (** 
 Add data by first getting the current data_id,
@@ -28,6 +35,7 @@ adding the data and incrementing the data_id
 let add_data (p, s: add_param * storage) : storage =
     let { sensor_id = sensor_id; data = data } = p in
 	let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
 	let get_n_data_ids : nat = 
     	match Map.find_opt sensor_id s.n_data_ids with
         | None -> (failwith sensor_not_found : nat)
@@ -45,6 +53,7 @@ else add it to the n_data_ids map
 let add_sensor (p, s: sensor_id * storage) : storage =
     let sensor_id = p in
 	let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
     if Map.mem sensor_id s.n_data_ids
     then (failwith sensor_already_exists : storage)
     else
@@ -59,6 +68,7 @@ and remove the n_data_ids of that sensor as well
 let remove_sensor (p, s: sensor_id * storage) : storage = 
     let sensor_id = p in
 	let () = fail_if_not_admin s in	
+	let () = fail_if_any_tez_amt s in
 	if not Map.mem sensor_id s.n_data_ids
 	then (failwith sensor_not_found : storage) 
 	else
@@ -79,6 +89,7 @@ let remove_sensor (p, s: sensor_id * storage) : storage =
 let update_admin (p, s: address * storage) : storage =
 	let new_admin = p in
 	let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
     { s with admin = new_admin }
 
 let withdraw (p, s: withdraw_param * storage) : return =

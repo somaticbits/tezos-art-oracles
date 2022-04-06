@@ -15,24 +15,37 @@ let not_enough_balance = "NOT_ENOUGH_BALANCE"
 (** Operation failed because provided account is not a contract *)
 let not_contract = "NOT_CONTRACT"
 
+(** Operation failed because transaction included tez *)
+let not_zero_tez = "NOT_ZERO_TEZ"
+
+let fail_if_not_admin (s: storage) : unit =
+	if Tezos.source <> s.admin
+    then (failwith op_not_admin : unit)
+    else unit
+
+let fail_if_any_tez_amt (s: storage) : unit =
+	if Tezos.amount > 0tz
+	then (failwith not_zero_tez : unit)
+	else unit
+
+
 (** 
 Add data by first getting the current data_id,
 adding the data and incrementing the data_id
 *)
 let add_data (p, s: add_param * storage) : storage =
     let { sensor_id = sensor_id; data = data } = p in
-    if Tezos.source <> s.admin
-    then (failwith op_not_admin : storage)
-    else
-        let get_n_data_ids : nat = 
-            match Map.find_opt sensor_id s.n_data_ids with
-            | None -> (failwith sensor_not_found : nat)
-            | Some id -> id in
-        let new_data = Big_map.add (sensor_id, get_n_data_ids) data s.sensor_ledger in
-        let increment_data_id = Map.update sensor_id (Some (get_n_data_ids + 1n)) s.n_data_ids in
-        { s with 
-                sensor_ledger = new_data;
-                n_data_ids    = increment_data_id }
+ 	let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
+	let get_n_data_ids : nat = 
+        match Map.find_opt sensor_id s.n_data_ids with
+        | None -> (failwith sensor_not_found : nat)
+        | Some id -> id in
+    let new_data = Big_map.add (sensor_id, get_n_data_ids) data s.sensor_ledger in
+    let increment_data_id = Map.update sensor_id (Some (get_n_data_ids + 1n)) s.n_data_ids in
+    { s with 
+        	sensor_ledger = new_data;
+            n_data_ids    = increment_data_id }
 
 (**
 Check first if sensor already exists,
@@ -40,14 +53,13 @@ else add it to the n_data_ids map
 *) 
 let add_sensor (p, s: sensor_id * storage) : storage =
     let sensor_id = p in
-    if Tezos.source <> s.admin
-    then (failwith op_not_admin : storage)
+    let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
+	if Map.mem sensor_id s.n_data_ids
+    then (failwith sensor_already_exists : storage)
     else
-        if Map.mem sensor_id s.n_data_ids
-        then (failwith sensor_already_exists : storage)
-        else
-            let new_sensor = Map.add sensor_id 0n s.n_data_ids in
-            { s with n_data_ids = new_sensor }
+        let new_sensor = Map.add sensor_id 0n s.n_data_ids in
+        { s with n_data_ids = new_sensor }
 
 (**
 Remove sensor by removing the incremental data_id in the
@@ -56,15 +68,14 @@ a new map out of that
 *)
 let remove_sensor (p, s: sensor_id * storage) : storage =
 	let sensor_id = p in
-	if Tezos.source <> s.admin
-	then (failwith op_not_admin : storage)
+	let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
+	let rec remove_values (sensor_key, last_sensor_key, sensor_ledger: sensor_key * sensor_key * sensor_ledger) : sensor_ledger = 
+	if sensor_key.1 > last_sensor_key.1
+	then sensor_ledger
 	else
-		let rec remove_values (sensor_key, last_sensor_key, sensor_ledger: sensor_key * sensor_key * sensor_ledger) : sensor_ledger = 
-		if sensor_key.1 > last_sensor_key.1
-		then sensor_ledger
-		else
-			let new_sensor_ledger = Big_map.update sensor_key (None: nat option) sensor_ledger in
-			let new_sensor_key = (sensor_key.0, sensor_key.1 + 1n) in
+		let new_sensor_ledger = Big_map.update sensor_key (None: nat option) sensor_ledger in
+		let new_sensor_key = (sensor_key.0, sensor_key.1 + 1n) in
 			remove_values (new_sensor_key, last_sensor_key, new_sensor_ledger) in
 		let get_n_data_ids : nat = 
             match Map.find_opt sensor_id s.n_data_ids with
@@ -78,17 +89,14 @@ let remove_sensor (p, s: sensor_id * storage) : storage =
 
 let update_admin (p, s: address * storage) : storage =
 	let new_admin = p in
-    if Tezos.source <> s.admin
-    then (failwith op_not_admin : storage)
-    else
-        { s with admin = new_admin }
+    let () = fail_if_not_admin s in
+	let () = fail_if_any_tez_amt s in
+    { s with admin = new_admin }
 
 let withdraw (p, s: withdraw_param * storage) : return =
     let { tez_amt = tez_amt } = p in
-    if Tezos.source <> s.admin
-    then (failwith op_not_admin : return)
-    else
-        if Tezos.balance < tez_amt
+    let () = fail_if_not_admin s in
+    if Tezos.balance < tez_amt
         then (failwith not_enough_balance : return)
         else
             let receiver : unit contract =
