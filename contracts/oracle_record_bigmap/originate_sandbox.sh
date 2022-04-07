@@ -16,4 +16,4 @@ fi
 
 echo "[*] Originating contract on sandbox."
 
-tezos-client -E http://192.168.2.155:20000 originate contract main transferring 1 from alice running ./contracts/main.tz --init "`cat ./contracts/main_storage.tz`" --burn-cap 2 --force
+tezos-client -E http://localhost:20000 originate contract main transferring 1 from alice running ./contracts/main.tz --init "`cat ./contracts/main_storage.tz`" --burn-cap 2 --force
