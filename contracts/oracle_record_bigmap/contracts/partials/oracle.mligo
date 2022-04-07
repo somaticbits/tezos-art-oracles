@@ -23,7 +23,7 @@ let fail_if_not_admin (s: storage) : unit =
     then (failwith op_not_admin : unit)
     else unit
 
-let fail_if_any_tez_amt (s: storage) : unit =
+let fail_if_any_tez_amt (_s: storage) : unit =
 	if Tezos.amount > 0tz
 	then (failwith not_zero_tez : unit)
 	else unit
