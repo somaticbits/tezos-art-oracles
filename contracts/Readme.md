@@ -11,9 +11,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/somaticbits/oracle">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
 
 <h3 align="center">Tezos Blockchain Oracle for the Arts</h3>
 </div>
