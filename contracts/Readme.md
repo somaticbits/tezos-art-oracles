@@ -149,8 +149,7 @@ First, get the Tezos development stack for LIGO running (Linux). This will be ne
 
 <!-- CONTACT -->
 ## Contact
-
-Your Name - [@somaticbits](https://twitter.com/somaticbits) - david@somaticbits.com
+[@somaticbits](https://twitter.com/somaticbits) - david@somaticbits.com
 
 Project Link: [https://github.com/somaticbits/oracle](https://github.com/somaticbits/oracle)
 
