@@ -2,24 +2,55 @@ name: benchmark
 
 on:
   push:
-    paths: ['benchmark/**', '.github/workflows/benchmark.yml']
+    branches: [main]
+    paths: ["benchmark/**", "contracts/**", ".github/workflows/benchmark.yml"]
   pull_request:
-    paths: ['benchmark/**', '.github/workflows/benchmark.yml']
+    paths: ["benchmark/**", "contracts/**", ".github/workflows/benchmark.yml"]
+
+defaults:
+  run:
+    working-directory: benchmark
 
 jobs:
-  typecheck-and-build:
+  check:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: benchmark
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 16
+          node-version: 22
           cache: npm
           cache-dependency-path: benchmark/package-lock.json
-      # Skip native builds (pigpio needs the C library); not needed to typecheck or build
-      - run: npm ci --ignore-scripts
+      - run: npm ci
+      - run: npm run lint
       - run: npm run typecheck
-      - run: npm run build
+      - run: npm test
+
+  sandbox:
+    name: run on sandbox
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: benchmark/package-lock.json
+      - run: npm ci
+      - run: npm run sandbox
+      - name: Wait for the sandbox to produce blocks
+        run: |
+          for _ in $(seq 60); do
+            level=$(curl -sf http://localhost:20000/chains/main/blocks/head/header | jq -r .level || true)
+            [ "${level:-0}" -gt 1 ] && exit 0
+            sleep 2
+          done
+          docker logs oracle-sandbox
+          exit 1
+      - run: npm start
+        env:
+          STEPS: 3
+      - uses: actions/upload-artifact@v7
+        with:
+          name: results
+          path: benchmark/results/*.csv
