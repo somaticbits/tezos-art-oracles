@@ -12,6 +12,18 @@ defaults:
     working-directory: benchmark
 
 jobs:
+  contracts:
+    name: contracts compile and test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v7
+      - run: ./contracts/compile_all.sh
+      - name: Committed Michelson matches the sources
+        run: git diff --exit-code -- contracts
+
   check:
     runs-on: ubuntu-latest
     steps:
