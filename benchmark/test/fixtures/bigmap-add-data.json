@@ -1,0 +1,119 @@
+[
+  {
+    "kind": "transaction",
+    "source": "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb",
+    "fee": "362",
+    "counter": "13",
+    "gas_limit": "712",
+    "storage_limit": "87",
+    "amount": "0",
+    "destination": "KT1BACHWsuSTPtqt4zfJVPNZ3ge8ZcWP17Si",
+    "parameters": {
+      "entrypoint": "add_data",
+      "value": {
+        "prim": "Pair",
+        "args": [
+          {
+            "int": "42"
+          },
+          {
+            "int": "0"
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "balance_updates": [
+        {
+          "kind": "contract",
+          "contract": "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb",
+          "change": "-362",
+          "origin": "block"
+        },
+        {
+          "kind": "accumulator",
+          "category": "block fees",
+          "change": "362",
+          "origin": "block"
+        }
+      ],
+      "operation_result": {
+        "status": "applied",
+        "storage": {
+          "prim": "Pair",
+          "args": [
+            {
+              "prim": "Pair",
+              "args": [
+                {
+                  "bytes": "00006b82198cb179e8306c1bedd08f12dc863f328886"
+                },
+                [
+                  {
+                    "prim": "Elt",
+                    "args": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "int": "4"
+                      }
+                    ]
+                  }
+                ]
+              ]
+            },
+            {
+              "int": "4"
+            }
+          ]
+        },
+        "balance_updates": [
+          {
+            "kind": "contract",
+            "contract": "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb",
+            "change": "-16750",
+            "origin": "block"
+          },
+          {
+            "kind": "burned",
+            "category": "storage fees",
+            "change": "16750",
+            "origin": "block"
+          }
+        ],
+        "consumed_milligas": "611187",
+        "storage_size": "1797",
+        "paid_storage_size_diff": "67",
+        "lazy_storage_diff": [
+          {
+            "kind": "big_map",
+            "id": "4",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "exprtodNzATXk6CnUTUDDVSuhaxtyucBURUyPSejpSozMdXzAZA3DG",
+                  "key": {
+                    "prim": "Pair",
+                    "args": [
+                      {
+                        "int": "0"
+                      },
+                      {
+                        "int": "3"
+                      }
+                    ]
+                  },
+                  "value": {
+                    "int": "42"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+]
