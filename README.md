@@ -4,10 +4,10 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/cost-24h-dark.svg">
-  <img alt="Simulated 24-hour cost for one sensor: big_map 5.51 tez, record + big_map 6.17 tez, map 10.39 tez" src="docs/cost-24h-light.svg" width="720">
+  <img alt="Projected 24-hour cost for one sensor, fee plus storage burn: record + big_map about 1.1 tez, map about 8.9 tez, big_map about 49.3 tez" src="docs/cost-24h-light.svg" width="720">
 </picture>
 
-<sub>Thesis figures (2022). They track gas rather than the full cost of a write; see <a href="#results">Results</a> for re-measured numbers.</sub>
+<sub>Re-measured in 2026 on a Flextesa sandbox. The thesis figures from 2022 and why they differ are under <a href="#results">Results</a>.</sub>
 
 ## Why it exists
 
@@ -52,7 +52,7 @@ The [benchmark](benchmark) originates all three contracts on a [Flextesa](https:
 - **A `big_map` history costs the most per write.** Each new entry pays for about 67 bytes versus 11 in a `map`, because a big_map entry also stores the hash of its key.
 - **A `map` history gets slower as it grows.** The whole map is loaded on every call, so gas rose 44 % over 200 writes; a long enough history would eventually hit the per-operation gas limit. A `big_map` is loaded lazily, so its gas stays flat.
 
-**Thesis (2022).** 2,880 writes per contract on a Hangzhou sandbox with 3 s blocks, as published in the thesis and shown in the chart above:
+**Thesis (2022).** 2,880 writes per contract on a Hangzhou sandbox with 3 s blocks, as published in the thesis:
 
 | Prototype | 24 h total | Average per write |
 |---|---|---|
