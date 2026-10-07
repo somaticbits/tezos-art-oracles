@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 190" width="720" height="190" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" role="img" aria-labelledby="t d">
+<title id="t">Simulated 24-hour cost per oracle storage design</title>
+<desc id="d">big_map: 5.51 tez over 24 h, 0.0019 tez per write; record + big_map: 6.17 tez over 24 h, 0.0021 tez per write; map: 10.39 tez over 24 h, 0.0036 tez per write. One sensor, 2,880 writes, Flextesa sandbox, Ithaca 2.</desc>
+<text x="0" y="20" font-size="15" font-weight="600" fill="#f0f6fc">Cost of one sensor writing every block for 24 h</text>
+<text x="0" y="40" font-size="12" fill="#9198a1">2,880 add_data calls · Flextesa sandbox · Tezos protocol Ithaca 2 · tez (ꜩ)</text>
+<text x="118" y="73.0" font-size="13" text-anchor="end" fill="#f0f6fc">big_map</text>
+<path d="M130,58 H316.9 Q320.9,58 320.9,62 V76 Q320.9,80 316.9,80 H130 Z" fill="#3987e5"/>
+<text x="328.9" y="73.0" font-size="13" fill="#f0f6fc"><tspan font-weight="600">5.51 ꜩ</tspan><tspan fill="#9198a1" font-size="12">  0.0019 ꜩ / write</tspan></text>
+<text x="118" y="107.0" font-size="13" text-anchor="end" fill="#f0f6fc">record + big_map</text>
+<path d="M130,92 H339.8 Q343.8,92 343.8,96 V110 Q343.8,114 339.8,114 H130 Z" fill="#3987e5"/>
+<text x="351.8" y="107.0" font-size="13" fill="#f0f6fc"><tspan font-weight="600">6.17 ꜩ</tspan><tspan fill="#9198a1" font-size="12">  0.0021 ꜩ / write</tspan></text>
+<text x="118" y="141.0" font-size="13" text-anchor="end" fill="#f0f6fc">map</text>
+<path d="M130,126 H486.0 Q490.0,126 490.0,130 V144 Q490.0,148 486.0,148 H130 Z" fill="#3987e5"/>
+<text x="498.0" y="141.0" font-size="13" fill="#f0f6fc"><tspan font-weight="600">10.39 ꜩ</tspan><tspan fill="#9198a1" font-size="12">  0.0036 ꜩ / write</tspan></text>
+<line x1="130" y1="52" x2="130" y2="154" stroke="#9198a1" stroke-width="1"/>
+<text x="0" y="184" font-size="11" fill="#9198a1">Source: Pettersson, Exploring the Use of Blockchain Oracles in Physical Art Installations, CODE Berlin, 2022.</text>
+</svg>

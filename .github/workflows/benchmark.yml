@@ -1,0 +1,25 @@
+name: benchmark
+
+on:
+  push:
+    paths: ['benchmark/**', '.github/workflows/benchmark.yml']
+  pull_request:
+    paths: ['benchmark/**', '.github/workflows/benchmark.yml']
+
+jobs:
+  typecheck-and-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: benchmark
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: npm
+          cache-dependency-path: benchmark/package-lock.json
+      # Skip native builds (pigpio needs the C library); not needed to typecheck or build
+      - run: npm ci --ignore-scripts
+      - run: npm run typecheck
+      - run: npm run build
