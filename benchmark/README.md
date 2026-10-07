@@ -44,14 +44,14 @@ STEPS=10 CONTRACTS=oracle_map npm start
 
 ### Configuration
 
-| Variable | Default | Meaning |
-| --- | --- | --- |
-| `STEPS` | `2880` | Readings written per contract |
-| `INTERVAL_MS` | `0` | Extra pause between readings, on top of waiting for each block |
-| `CONTRACTS` | all three | Comma-separated subset, e.g. `oracle_map,oracle_bigmap` |
-| `TEZOS_RPC_URL` | `http://localhost:20000` | Node to talk to |
-| `TEZOS_SECRET_KEY` | Flextesa `alice` | Signing key; the default is the public sandbox key and only works on a sandbox |
-| `RESULTS_DIR` | `results` | Where CSVs are written |
+| Variable           | Default                  | Meaning                                                                        |
+| ------------------ | ------------------------ | ------------------------------------------------------------------------------ |
+| `STEPS`            | `2880`                   | Readings written per contract                                                  |
+| `INTERVAL_MS`      | `0`                      | Extra pause between readings, on top of waiting for each block                 |
+| `CONTRACTS`        | all three                | Comma-separated subset, e.g. `oracle_map,oracle_bigmap`                        |
+| `TEZOS_RPC_URL`    | `http://localhost:20000` | Node to talk to                                                                |
+| `TEZOS_SECRET_KEY` | Flextesa `alice`         | Signing key; the default is the public sandbox key and only works on a sandbox |
+| `RESULTS_DIR`      | `results`                | Where CSVs are written                                                         |
 
 The contracts' initial storage makes `alice` the admin, so another key needs recompiled storage.
 
