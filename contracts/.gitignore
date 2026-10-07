@@ -1,2 +1,2 @@
-# Ignore compiled contracts
-*.tz
+# The oracle contracts are compiled and committed (see compile_all.sh) so the benchmark runs without LIGO.
+user/**/*.tz
