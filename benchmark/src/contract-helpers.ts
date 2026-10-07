@@ -10,15 +10,12 @@ const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+// Compiled Michelson lives in the repo's top-level contracts/ folder (run each compile.sh first)
+const contractsDir = path.join(__dirname, '..', '..', 'contracts');
+
 const readTzFile = (contractType: string) => {
-  const contract = fs.readFileSync(
-    path.join(`${__dirname}`, 'contracts', `${contractType}`, 'contracts', 'main.tz'),
-    'utf8',
-  );
-  const storage = fs.readFileSync(
-    path.join(`${__dirname}`, 'contracts', `${contractType}`, 'contracts', 'main_storage.tz'),
-    'utf8',
-  );
+  const contract = fs.readFileSync(path.join(contractsDir, contractType, 'contracts', 'main.tz'), 'utf8');
+  const storage = fs.readFileSync(path.join(contractsDir, contractType, 'contracts', 'main_storage.tz'), 'utf8');
 
   return { contract, storage };
 };

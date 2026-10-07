@@ -36,6 +36,7 @@ const addData = (signer: TezosToolkit, contractAddress: string): Promise<Fees[]>
 
 const writeCSV = (data: Fees[], time: number, steps: number, contractType: string) => {
   const date = new Date();
+  fs.mkdirSync(path.join(__dirname, 'results'), { recursive: true });
   const stream = fs.createWriteStream(
     path.join(
       __dirname,
